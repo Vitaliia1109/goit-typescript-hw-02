@@ -9,15 +9,17 @@ import ImageModal from "../ImageModal/ImageModal";
 import { Image } from "./App.types";
 
 export default function App() {
-  const [photos, setPhotos] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [photos, setPhotos] = useState<Image[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
 
-  const [page, setPage] = useState(1);
-  const [query, setQuery] = useState("");
+  const [page, setPage] = useState<number>(1);
+  const [query, setQuery] = useState<string>("");
 
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedImageLarge, setSelectedImageLarge] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
+  const [selectedImageLarge, setSelectedImageLarge] = useState<string | null>(
+    null
+  );
 
   const handleSearch = (newQuery: string): void => {
     setQuery(newQuery);
