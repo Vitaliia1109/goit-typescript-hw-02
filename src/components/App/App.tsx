@@ -6,6 +6,7 @@ import Loader from "../Loader/Loader";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import SearchBar from "../SearchBar/SearchBar";
 import ImageModal from "../ImageModal/ImageModal";
+import { Image } from "./App.types";
 
 export default function App() {
   const [photos, setPhotos] = useState([]);
@@ -18,7 +19,7 @@ export default function App() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageLarge, setSelectedImageLarge] = useState(null);
 
-  const handleSearch = async (newQuery) => {
+  const handleSearch = (newQuery: string): void => {
     setQuery(newQuery);
     setPage(1);
     setPhotos([]);
@@ -32,11 +33,11 @@ export default function App() {
     if (query === "") {
       return;
     }
-    async function getPhotos() {
+    async function getPhotos(): Promise<void> {
       try {
         setError(false);
         setIsLoading(true);
-        const data = await fetchPhotos(query, page);
+        const data: Image[] = await fetchPhotos(query, page);
         setPhotos((prevPhotos) => {
           return [...prevPhotos, ...data];
         });
@@ -49,9 +50,9 @@ export default function App() {
     getPhotos();
   }, [page, query]);
 
-  const openImageModal = (imageUrl, imageUrlLarge) => {
-    setSelectedImage(imageUrl);
-    setSelectedImageLarge(imageUrlLarge);
+  const openImageModal = (image: Image) => {
+    setSelectedImage(image);
+    setSelectedImageLarge(image.urls.regular);
   };
 
   const closeImageModal = () => {
@@ -67,9 +68,7 @@ export default function App() {
       {photos.length > 0 && (
         <ImageGallery
           items={photos}
-          onImageClick={(item) =>
-            openImageModal(item.urls.small, item.urls.regular)
-          }
+          onImageClick={(item) => openImageModal(item)}
         />
       )}
       {photos.length > 0 && !isLoading && (
@@ -79,7 +78,7 @@ export default function App() {
         <ImageModal
           isOpen={true}
           onRequestClose={closeImageModal}
-          imageUrl={selectedImage}
+          image={selectedImage}
           imageUrlLarge={selectedImageLarge}
         />
       )}
