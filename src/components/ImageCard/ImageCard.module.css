@@ -1,0 +1,7 @@
+.img {
+  width: 550px;
+  height: 450px;
+  object-fit: cover;
+  object-position: center;
+  overflow: hidden;
+}
